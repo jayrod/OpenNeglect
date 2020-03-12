@@ -15,7 +15,7 @@ version = re.search(
     re.M
     ).group(1)
 
-if exists("README.rst"):
+if exists("README.md"):
     with open("README.rst", "rb") as f:
         long_descr = f.read().decode("utf-8")
 else:
