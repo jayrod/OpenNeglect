@@ -2,7 +2,7 @@
 
 """OpenNeglect.OpenNeglect: provides entry point main()."""
 
-__version__ = "0.5"
+__version__ = "0.6"
 
 import argparse
 import re
@@ -105,10 +105,8 @@ def main():
     args = parser.parse_args()
 
     ip = validate_input(args)
-    import pdb;pdb.set_trace()
 
     Util().append_scan_log("OpenNeglect")
-    sys.exit()
 
     if not ip:
         print(err_msg("Check IP argument"))
