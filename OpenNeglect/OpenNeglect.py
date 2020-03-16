@@ -2,21 +2,23 @@
 
 """OpenNeglect.OpenNeglect: provides entry point main()."""
 
-__version__ = "0.4"
+__version__ = "0.5"
 
 import argparse
 import re
 import sys
 from ipaddress import ip_address
+from json import dumps
 from os import environ
 from pathlib import Path
 from shutil import which
 from subprocess import CompletedProcess, run
 from typing import Tuple
-from json import dumps
 
 from markdown_table import Table
 from tabulate import tabulate
+
+from OpenNeglect.Util import Util
 
 
 def msg(message: str) -> str:
@@ -103,6 +105,10 @@ def main():
     args = parser.parse_args()
 
     ip = validate_input(args)
+    import pdb;pdb.set_trace()
+
+    Util().append_scan_log("OpenNeglect")
+    sys.exit()
 
     if not ip:
         print(err_msg("Check IP argument"))
