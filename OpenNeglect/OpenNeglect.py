@@ -2,7 +2,7 @@
 
 """OpenNeglect.OpenNeglect: provides entry point main()."""
 
-__version__ = "0.6"
+__version__ = "0.7"
 
 import argparse
 import re
@@ -98,7 +98,7 @@ def render_tab_table(columns: list, full_table: list) -> str:
 
 def main():
     print("Executing OpenNeglect version %s." % __version__)
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Rpcclient wrapper")
     parser.add_argument("--target", help="IP address for target.")
     parser.add_argument("--markdown", help="Markdown File to append data.")
     parser.add_argument("--json", help="JSON file to write data.")
