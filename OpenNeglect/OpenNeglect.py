@@ -19,14 +19,7 @@ from markdown_table import Table
 from tabulate import tabulate
 
 from OpenNeglect.Util import Util
-
-
-def msg(message: str) -> str:
-    return "[+] {0}".format(message)
-
-
-def err_msg(message: str) -> str:
-    return "[!] {0}".format(message)
+from OpenNeglect.markdown import Markdown
 
 
 def validate_input(args) -> ip_address:
@@ -38,19 +31,19 @@ def validate_input(args) -> ip_address:
         if not args.target:
             # look for RHOST environ var
             if "RHOST" in environ.keys():
-                print(msg("Using Environment variable for IP address"))
+                print(Util().msg("Using Environment variable for IP address"))
                 ip = ip_address(environ["RHOST"])
         else:
             ip = ip_address(args.target)
 
     except ValueError:
-        print(err_msg("Argument or environment variable was not a valid IP address"))
+        print(Util().err_msg("Argument or environment variable was not a valid IP address"))
         sys.exit()
 
     # Input check file
     if args.markdown:
         if Path(args.markdown).is_dir():
-            print(err_msg("Given argument is a path and not a file"))
+            print(Util().err_msg("Given argument is a path and not a file"))
             sys.exit()
 
     return ip
@@ -109,50 +102,50 @@ def main():
     Util().append_scan_log("OpenNeglect")
 
     if not ip:
-        print(err_msg("Check IP argument"))
+        print(Util().err_msg("Check IP argument"))
         sys.exit(-1)
 
     rpcclient_bin = which("rpcclient")
     if not rpcclient_bin:
-        print(err_msg("Unable to locate rpcclient binary"))
+        print(Util().err_msg("Unable to locate rpcclient binary"))
         sys.exit(1)
 
-    print(msg("rpcclient binary : {0}".format(rpcclient_bin)))
+    print(Util().msg("rpcclient binary : {0}".format(rpcclient_bin)))
 
     cmd_output = enumdomusers(rpcclient_bin, str(ip))
     if cmd_output.returncode:
-        print(err_msg("Rpcclient returned with an error code"))
+        print(Util().err_msg("Rpcclient returned with an error code"))
         print("Error : {0}\nOutput : {1}".format(cmd_output.stderr, cmd_output.stdout))
         sys.exit(1)
 
-    print(msg("Parsing Output returned from enumdomusers"))
+    print(Util().msg("Parsing Output returned from enumdomusers"))
     output = parse(str(cmd_output.stdout))
 
     if not output:
         print(err_msg("Was unable to parse information from rpcclient output"))
         sys.exit(1)
 
-    print(msg("Located {0} users".format(len(output))))
+    print(Util().msg("Located {0} users".format(len(output))))
 
     # create column and output data
     columns, table = userinfo_to_table(output)
 
     # if json argument given then write to file
     if args.json:
-        print(msg("Writing json to file"))
+        print(Util().msg("Writing json to file"))
         with open(args.json, "w") as json_file:
             json_file.write(dumps(output, indent=4))
 
     # if Output file given then write output to it
     if args.markdown:
-        print(msg("Writing markdown to file"))
+        print(Util().msg("Writing markdown to file"))
         md_table = render_md_table(columns, table)
 
         with open(args.markdown, "a+") as markdown_file:
             markdown_file.write("\n")
             markdown_file.write(md_table)
 
-    print(msg("User Enumeration"))
+    print(Util().msg("User Enumeration"))
     tabulate_table = render_tab_table(columns, table)
 
     print(tabulate_table)
