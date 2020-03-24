@@ -2,7 +2,7 @@
 
 """OpenNeglect.OpenNeglect: provides entry point main()."""
 
-__version__ = "0.7"
+__version__ = "0.7.1"
 
 import argparse
 import re
@@ -122,7 +122,7 @@ def main():
     output = parse(str(cmd_output.stdout))
 
     if not output:
-        print(err_msg("Was unable to parse information from rpcclient output"))
+        print(Util().err_msg("Was unable to parse information from rpcclient output"))
         sys.exit(1)
 
     print(Util().msg("Located {0} users".format(len(output))))
