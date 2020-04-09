@@ -2,7 +2,7 @@
 
 """OpenNeglect.OpenNeglect: provides entry point main()."""
 
-__version__ = "0.7.1"
+__version__ = "0.7.2"
 
 import argparse
 import re
@@ -63,7 +63,7 @@ def enumdomusers(rpcclient_bin: str, target_ip: str) -> CompletedProcess:
 
 
 def parse(cmd_output: str) -> list:
-    regex = r"user:\[(\w+)]\srid:\[(\w+)\]"
+    regex = r"user:\[([\$\w.-]+)]\srid:\[(\w+)\]"
     matches = re.findall(regex, cmd_output)
     ret_list = [{"user": m[0], "rid": m[1]} for m in matches if m]
     return ret_list
